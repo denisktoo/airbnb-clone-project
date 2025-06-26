@@ -69,31 +69,36 @@ Based on the project requirements and development best practices, our team consi
 
 ### Key Entities
 
-#### Users
-- **Fields**: user_id (Primary Key), username, email, password_hash, first_name, last_name, phone_number, profile_picture, created_at, updated_at
-- **Relationships**: One-to-many with Properties (as host), one-to-many with Bookings (as guest), one-to-many with Reviews (as reviewer)
+### Users
+* **Fields**: user_id (Primary Key), first_name, last_name, email, password_hash, phone_number, role, created_at
+* **Relationships**: One-to-many with Properties (as host), one-to-many with Bookings (as guest), one-to-many with Reviews (as reviewer), one-to-many with Messages (as sender), one-to-many with Messages (as recipient)
 
-#### Properties
-- **Fields**: property_id (Primary Key), host_id (Foreign Key), title, description, location, price_per_night, amenities, max_guests, created_at, updated_at
-- **Relationships**: Many-to-one with Users (host), one-to-many with Bookings, one-to-many with Reviews
+### Properties
+* **Fields**: property_id (Primary Key), host_id (Foreign Key), name, description, location, price_per_night, created_at, updated_at
+* **Relationships**: Many-to-one with Users (host), one-to-many with Bookings, one-to-many with Reviews
 
-#### Bookings
-- **Fields**: booking_id (Primary Key), property_id (Foreign Key), guest_id (Foreign Key), check_in_date, check_out_date, total_price, status, created_at, updated_at
-- **Relationships**: Many-to-one with Properties, many-to-one with Users (guest), one-to-one with Payments
+### Bookings
+* **Fields**: booking_id (Primary Key), property_id (Foreign Key), user_id (Foreign Key), start_date, end_date, total_price, status, created_at
+* **Relationships**: Many-to-one with Properties, many-to-one with Users (guest), one-to-one with Payments
 
-#### Reviews
-- **Fields**: review_id (Primary Key), property_id (Foreign Key), user_id (Foreign Key), rating, comment, created_at, updated_at
-- **Relationships**: Many-to-one with Properties, many-to-one with Users
+### Reviews
+* **Fields**: review_id (Primary Key), property_id (Foreign Key), user_id (Foreign Key), rating, comment, created_at
+* **Relationships**: Many-to-one with Properties, many-to-one with Users
 
-#### Payments
-- **Fields**: payment_id (Primary Key), booking_id (Foreign Key), amount, payment_method, transaction_id, status, created_at, updated_at
-- **Relationships**: One-to-one with Bookings
+### Payments
+* **Fields**: payment_id (Primary Key), booking_id (Foreign Key), amount, payment_date, payment_method
+* **Relationships**: One-to-one with Bookings
 
-### Entity Relationships
-- A User can host multiple Properties and make multiple Bookings
-- A Property belongs to one User (host) and can have multiple Bookings and Reviews
-- A Booking connects a User (guest) with a Property and has one associated Payment
-- Reviews are created by Users for Properties they have experienced
+### Messages
+* **Fields**: message_id (Primary Key), sender_id (Foreign Key), recipient_id (Foreign Key), message_body, sent_at
+* **Relationships**: Many-to-one with Users (sender), many-to-one with Users (recipient)
+
+## Entity Relationships
+* A User can host multiple Properties and make multiple Bookings
+* A Property belongs to one User (host) and can have multiple Bookings and Reviews
+* A Booking connects a User (guest) with a Property and has one associated Payment
+* Reviews are created by Users for Properties they have experienced
+* Messages facilitate communication between Users (hosts and guests)
 
 ## Feature Breakdown
 
